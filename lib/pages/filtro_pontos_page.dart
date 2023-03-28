@@ -132,10 +132,10 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
                     final novoPonto = key.currentState!.novoPonto;
                     if(indice == null) {
                       novoPonto.id = ++ _ultimoId;
+                      pontos.add(novoPonto);
                     } else {
                       pontos[indice] = novoPonto;
                     }
-                    pontos.add(novoPonto);
                   });
                   Navigator.of(context).pop();
                 }
