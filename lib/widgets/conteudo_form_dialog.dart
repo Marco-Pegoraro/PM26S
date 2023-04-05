@@ -16,28 +16,29 @@ class ConteudoFormDialog extends StatefulWidget {
 
 class ConteudoFormDialogState extends State<ConteudoFormDialog> {
 
-  final formKey = GlobalKey<FormState>();
-  final descricaoController = TextEditingController();
-  final nomeController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _descricaoController = TextEditingController();
+  final _nomeController = TextEditingController();
+  final _dateFormat = DateFormat('dd/MM/yyyy');
 
   @override
   void initState() {
     super.initState();
     if(widget.pontoAtual != null) {
-      descricaoController.text = widget.pontoAtual!.descricao;
-      nomeController.text = widget.pontoAtual!.nome;
+      _descricaoController.text = widget.pontoAtual!.descricao;
+      _nomeController.text = widget.pontoAtual!.nome;
     }
   }
 
   Widget build(BuildContext context) {
 
     return Form(
-      key: formKey,
+      key: _formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
-            controller: nomeController,
+            controller: _nomeController,
             decoration: InputDecoration(labelText: 'Nome'),
             validator: (String? valor) {
               if(valor == null || valor.isEmpty) {
@@ -47,7 +48,7 @@ class ConteudoFormDialogState extends State<ConteudoFormDialog> {
             },
           ),
           TextFormField(
-            controller: descricaoController,
+            controller: _descricaoController,
             decoration: InputDecoration(labelText: 'Descrição'),
             validator: (String? valor) {
               if(valor == null || valor.isEmpty) {
@@ -61,13 +62,13 @@ class ConteudoFormDialogState extends State<ConteudoFormDialog> {
     );
   }
 
-  bool dadosValidados() => formKey.currentState!.validate() == true;
+  bool dadosValidados() => _formKey.currentState!.validate() == true;
 
   PontoTuristico get novoPonto => PontoTuristico(
-      id: widget.pontoAtual?.id ?? 0,
-      nome: nomeController.text,
-      descricao: descricaoController.text,
-      cadastro: DateTime.now()
+      id: widget.pontoAtual?.id,
+      nome: _nomeController.text,
+      descricao: _descricaoController.text,
+      //cadastro: _dateFormat.parse(DateTime.now().toString())
   );
 
 }

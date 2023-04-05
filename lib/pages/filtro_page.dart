@@ -22,11 +22,10 @@ class _FiltroPageState extends State<FiltroPage> {
   final _camposParaOrdenacao = {
     PontoTuristico.CAMPO_ID : 'Código',
     PontoTuristico.CAMPO_NOME : 'Nome',
-    PontoTuristico.CAMPO_DESCRICAO : 'Descrição',
-    PontoTuristico.CAMPO_CADASTRO : 'Data Cadastro'
+    PontoTuristico.CAMPO_DESCRICAO : 'Descrição'
   };
 
-  late final SharedPreferences pref;
+  late final SharedPreferences _prefs;
   final descricaoController = TextEditingController();
   String campoOrdenacao = PontoTuristico.CAMPO_ID;
   bool usarOrdemDecrescente = false;
@@ -49,12 +48,11 @@ class _FiltroPageState extends State<FiltroPage> {
   }
 
   void _carregaSharedPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    pref = prefs;
+    _prefs = await SharedPreferences.getInstance();
     setState(() {
-      campoOrdenacao = pref.getString(FiltroPage.CHAVE_CAMPO_ORDENACAO) ?? PontoTuristico.CAMPO_ID;
-      usarOrdemDecrescente = pref.getBool(FiltroPage.CHAVE_USAR_ORDEM_DECRESCENTE) ?? false;
-      descricaoController.text = pref.getString(FiltroPage.CHAVE_FILTRO_DESCRICAO) ?? '';
+      campoOrdenacao = _prefs.getString(FiltroPage.CHAVE_CAMPO_ORDENACAO) ?? PontoTuristico.CAMPO_ID;
+      usarOrdemDecrescente = _prefs.getBool(FiltroPage.CHAVE_USAR_ORDEM_DECRESCENTE) ?? false;
+      descricaoController.text = _prefs.getString(FiltroPage.CHAVE_FILTRO_DESCRICAO) ?? '';
     });
   }
 
@@ -76,7 +74,7 @@ class _FiltroPageState extends State<FiltroPage> {
         Divider(),
         Row(
           children: [
-            Checkbox(value: usarOrdemDecrescente, onChanged: _onUserDecrescenteChange),
+            Checkbox(value: usarOrdemDecrescente, onChanged: _onUsarDecrescenteChange),
             Text('Usar ordem decrescente')
           ],
         ),
@@ -99,23 +97,23 @@ class _FiltroPageState extends State<FiltroPage> {
   }
 
   void _onFiltroDescricaoChange(String? valor) {
-    pref.setString(FiltroPage.CHAVE_FILTRO_DESCRICAO, valor ?? '');
-    _alterouValores == true;
+    _prefs.setString(FiltroPage.CHAVE_FILTRO_DESCRICAO, valor ?? '');
+    _alterouValores = true;
   }
 
-  void _onUserDecrescenteChange(bool? valor) {
-    pref.setBool(FiltroPage.CHAVE_USAR_ORDEM_DECRESCENTE, valor == true);
-    _alterouValores == true;
+  void _onUsarDecrescenteChange(bool? valor) {
+    _prefs.setBool(FiltroPage.CHAVE_USAR_ORDEM_DECRESCENTE, valor!);
+    _alterouValores = true;
     setState(() {
-      usarOrdemDecrescente = valor == true;
+      usarOrdemDecrescente = valor;
     });
   }
 
   void _onCampoOrdenacaoChange(String? valor) {
-    pref.setString(FiltroPage.CHAVE_CAMPO_ORDENACAO, valor ?? '');
-    _alterouValores == true;
+    _prefs.setString(FiltroPage.CHAVE_CAMPO_ORDENACAO, valor!);
+    _alterouValores = true;
     setState(() {
-      usarOrdemDecrescente = valor == true;
+      campoOrdenacao = valor;
     });
   }
 
