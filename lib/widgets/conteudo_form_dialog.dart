@@ -68,7 +68,7 @@ class ConteudoFormDialogState extends State<ConteudoFormDialog> {
       id: widget.pontoAtual?.id,
       nome: _nomeController.text,
       descricao: _descricaoController.text,
-      //cadastro: _dateFormat.parse(DateTime.now().toString())
+      cadastro: DateTime.now()
   );
 
 }

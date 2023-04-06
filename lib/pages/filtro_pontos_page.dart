@@ -95,7 +95,7 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
           return PopupMenuButton<String>(
             child: ListTile(
               title: Text('${ponto.id} - ${ponto.nome}'),
-              subtitle: Text(ponto.descricao == null ? '${ponto.cadastro} | Ponto sem descrição' : '${ponto.cadastro} | ${ponto.descricao}'),
+              subtitle: Text(ponto.descricao == null ? '${ponto.cadastroFormatado} | Ponto sem descrição' : '${ponto.cadastroFormatado} | ${ponto.descricao}'),
             ),
             itemBuilder: (BuildContext context) => criarItensMenuPopup(),
             onSelected: (String valorSelecionado) {
