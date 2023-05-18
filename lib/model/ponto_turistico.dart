@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
 class PontoTuristico {
@@ -7,17 +10,23 @@ class PontoTuristico {
   static const CAMPO_NOME = 'nome';
   static const CAMPO_DESCRICAO = 'descricao';
   static const CAMPO_CADASTRO = 'cadastro';
+  static const CAMPO_LONGITUDE = 'longitude';
+  static const CAMPO_LATITUDE = 'latitude';
 
   int? id;
   String nome;
   String descricao;
   DateTime? cadastro;
+  double? longitude;
+  double? latitude;
 
   PontoTuristico({
     this.id,
     required this.nome,
     required this.descricao,
-    this.cadastro
+    this.cadastro,
+    this.longitude,
+    this.latitude
   });
 
   String get cadastroFormatado {
@@ -33,6 +42,8 @@ class PontoTuristico {
     CAMPO_DESCRICAO: descricao,
     CAMPO_CADASTRO:
     cadastro == null ? null : DateFormat("yyyy-MM-dd").format(cadastro!),
+    CAMPO_LONGITUDE: longitude,
+    CAMPO_LATITUDE: latitude
   };
 
   factory PontoTuristico.fromMap(Map<String, dynamic> map) => PontoTuristico(
@@ -42,6 +53,8 @@ class PontoTuristico {
     cadastro: map[CAMPO_CADASTRO] is String
         ? DateFormat("yyyy-MM-dd").parse(map[CAMPO_CADASTRO])
         : null,
+    longitude: map[CAMPO_LONGITUDE] is double ? map[CAMPO_LONGITUDE] : 0,
+    latitude: map[CAMPO_LATITUDE] is double ? map[CAMPO_LATITUDE] : 0
   );
 
 }

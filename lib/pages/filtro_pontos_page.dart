@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:projeto_turismo/dao/ponto_dao.dart';
 import 'package:projeto_turismo/model/ponto_turistico.dart';
 import 'package:projeto_turismo/pages/detalhes_ponto_page.dart';
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/conteudo_form_dialog.dart';
 import 'filtro_page.dart';
+import 'mapa_page.dart';
 
 class ListaPontosPage extends StatefulWidget {
 
@@ -20,10 +22,13 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
   static const ACAO_EDITAR = 'editar';
   static const ACAO_EXCLUIR = 'excluir';
   static const ACAO_VISUALIZAR = 'visualizar';
+  static const ACAO_MAPA_EXTERNO = 'externo';
+  static const ACAO_MAPA_INTERNO = 'interno';
 
   final _pontos = <PontoTuristico> [];
   final _dao = PontoDao();
   var _carregando = false;
+  final _controller = TextEditingController();
 
   @override
   void initState(){
@@ -105,6 +110,11 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => DetalhesPontoPage(pontoTuristico: ponto),
                 ));
+              } else if (valorSelecionado == ACAO_MAPA_EXTERNO) {
+                _controller.text = "${ponto.latitude}, ${ponto.longitude}";
+                _abrirTextoMapaExterno();
+              } else if (valorSelecionado == ACAO_MAPA_INTERNO) {
+                _abrirMapaInterno(ponto.longitude, ponto.latitude);
               } else {
                 _excluir(ponto);
               }
@@ -153,6 +163,30 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text('Visualizar'),
+              )
+            ],
+          )
+      ),
+      PopupMenuItem<String>(
+          value: ACAO_MAPA_EXTERNO,
+          child: Row(
+            children: [
+              Icon(Icons.map, color: Colors.green),
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text('Mapa Externo'),
+              )
+            ],
+          )
+      ),
+      PopupMenuItem<String>(
+          value: ACAO_MAPA_INTERNO,
+          child: Row(
+            children: [
+              Icon(Icons.map, color: Colors.lightGreen),
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text('Mapa Interno'),
               )
             ],
           )
@@ -243,6 +277,26 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
           );
         }
     );
+  }
+
+  void _abrirMapaInterno(double? longitude, double? latitude) {
+    if(longitude == 0 || latitude == 0 || longitude == null || latitude == null){
+      return;
+    }
+    Navigator.push(context, MaterialPageRoute(
+      builder: (BuildContext context) => MapasPage(
+        latitude: latitude!,
+        longetude: longitude!,
+      ),
+    ),
+    );
+  }
+
+  void _abrirTextoMapaExterno() {
+    if(_controller.text.trim().isEmpty){
+      return;
+    }
+    MapsLauncher.launchQuery(_controller.text);
   }
 
 }

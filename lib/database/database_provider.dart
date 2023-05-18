@@ -18,7 +18,8 @@ class DatabaseProvider {
     return await openDatabase(
       dbPath,
       version: _dbVersion,
-      onCreate: _onCreate
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade
     );
   }
 
@@ -28,8 +29,25 @@ class DatabaseProvider {
         ${PontoTuristico.CAMPO_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
         ${PontoTuristico.CAMPO_NOME} TEXT NOT NULL,
         ${PontoTuristico.CAMPO_DESCRICAO} TEXT NOT NULL,
-        ${PontoTuristico.CAMPO_CADASTRO} TEXT);
+        ${PontoTuristico.CAMPO_CADASTRO} TEXT, 
+        ${PontoTuristico.CAMPO_LONGITUDE} REAL, 
+        ${PontoTuristico.CAMPO_LATITUDE} REAL);
     ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    switch(oldVersion){
+      case 2:
+        await db.execute('''
+        ALTER TABLE ${PontoTuristico.NOME_TABELA}
+        ADD ${PontoTuristico.CAMPO_LONGITUDE} REAL;
+        ''');
+
+        await db.execute('''
+        ALTER TABLE ${PontoTuristico.NOME_TABELA}
+        ADD ${PontoTuristico.CAMPO_LATITUDE} REAL;
+        ''');
+    }
   }
 
   Future<void> close() async {

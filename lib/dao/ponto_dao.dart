@@ -48,7 +48,7 @@ class PontoDao {
     }
     final database = await dbProvider.database;
     final resultado = await database.query(PontoTuristico.NOME_TABELA,
-      columns: [PontoTuristico.CAMPO_ID, PontoTuristico.CAMPO_NOME, PontoTuristico.CAMPO_DESCRICAO, PontoTuristico.CAMPO_CADASTRO],
+      columns: [PontoTuristico.CAMPO_ID, PontoTuristico.CAMPO_NOME, PontoTuristico.CAMPO_DESCRICAO, PontoTuristico.CAMPO_CADASTRO, PontoTuristico.CAMPO_LONGITUDE, PontoTuristico.CAMPO_LATITUDE],
       where: where,
       orderBy: orderBy,
     );
