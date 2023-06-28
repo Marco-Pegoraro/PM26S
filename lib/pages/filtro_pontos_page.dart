@@ -7,6 +7,7 @@ import 'package:projeto_turismo/pages/detalhes_ponto_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/conteudo_form_dialog.dart';
+import 'busca_cep_page.dart';
 import 'filtro_page.dart';
 import 'mapa_page.dart';
 
@@ -24,6 +25,7 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
   static const ACAO_VISUALIZAR = 'visualizar';
   static const ACAO_MAPA_EXTERNO = 'externo';
   static const ACAO_MAPA_INTERNO = 'interno';
+  static const ACAO_BUSCA_CEP = 'cep';
 
   final _pontos = <PontoTuristico> [];
   final _dao = PontoDao();
@@ -110,6 +112,10 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => DetalhesPontoPage(pontoTuristico: ponto),
                 ));
+              } else if(valorSelecionado == ACAO_BUSCA_CEP) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => BuscaCepPage(pontoTuristico: ponto),
+                ));
               } else if (valorSelecionado == ACAO_MAPA_EXTERNO) {
                 _controller.text = "${ponto.latitude}, ${ponto.longitude}";
                 _abrirTextoMapaExterno();
@@ -163,6 +169,18 @@ class _ListaPontosPageState extends State<ListaPontosPage> {
               Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text('Visualizar'),
+              )
+            ],
+          )
+      ),
+      PopupMenuItem<String>(
+          value: ACAO_BUSCA_CEP,
+          child: Row(
+            children: [
+              Icon(Icons.map, color: Colors.red),
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text('CEP'),
               )
             ],
           )

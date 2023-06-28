@@ -11,6 +11,7 @@ class DetalhesPontoPage extends StatefulWidget {
 
   @override
   _DetalhesPontoPageState createState() => _DetalhesPontoPageState();
+
 }
 
 class _DetalhesPontoPageState extends State<DetalhesPontoPage> {

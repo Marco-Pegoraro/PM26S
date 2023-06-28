@@ -40,8 +40,7 @@ class PontoTuristico {
     CAMPO_ID: id,
     CAMPO_NOME: nome,
     CAMPO_DESCRICAO: descricao,
-    CAMPO_CADASTRO:
-    cadastro == null ? null : DateFormat("yyyy-MM-dd").format(cadastro!),
+    CAMPO_CADASTRO: cadastro == null ? null : DateFormat("yyyy-MM-dd").format(cadastro!),
     CAMPO_LONGITUDE: longitude,
     CAMPO_LATITUDE: latitude
   };
